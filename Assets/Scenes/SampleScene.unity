@@ -413,6 +413,7 @@ MonoBehaviour:
   terrainLength: 20
   spawnTriggerDistance: 400
   maxInstances: 25
+  obstacleManager: {fileID: 1170834758}
 --- !u!4 &423680944
 Transform:
   m_ObjectHideFlags: 0
@@ -438,7 +439,7 @@ GameObject:
   m_Component:
   - component: {fileID: 605584559}
   m_Layer: 0
-  m_Name: Managers
+  m_Name: ManagerScripts
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -677,7 +678,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1170834757
 Transform:
   m_ObjectHideFlags: 0
@@ -705,12 +706,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8a8311029c0be4458720a90ba7d8821, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerTransform: {fileID: 786165765}
   obstaclePrefabs:
   - {fileID: 3984039527880439494, guid: 29fa9f193c1abd24386d0ea768c1f666, type: 3}
-  initialSpawnPosition: {x: 0, y: 0, z: 5}
-  spawnRate: 100
-  maxInstances: 20
+  obstaclesPerTerrain: 4
+  laneWidth: 5
+  terrainLength: 20
 --- !u!850595691 &1395856681
 LightingSettings:
   m_ObjectHideFlags: 0
