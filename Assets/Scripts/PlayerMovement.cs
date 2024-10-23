@@ -2,55 +2,73 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float baseSpeed = 5f;
-    public float boost = 0f;
-    public float speedMultiplier = 1f;
+    public float baseSpeed = 10f;
+    public float laneDistance = 4f; // Distance between lanes
+    public float jumpHeight = 5f;
+    public float gravity = -9.81f;
+    
     private CharacterController controller;
     private Vector3 direction;
-    private float gravity = -9.81f;
-    private float jumpHeight = 5f;
+    private int desiredLane = 1; // 0=left, 1=center, 2=right
+
+    private float verticalVelocity;
 
     void Start()
     {
         controller = GetComponent<CharacterController>();
-        SetSpeedBasedOnLevel();
     }
 
     void Update()
     {
-        // Forward movement
-        direction.z = (baseSpeed * speedMultiplier) + boost; // Ensure boost is added to base speed
+        // Move the player forward
+        direction.z = baseSpeed;
 
-        // Jumping
+        // Get input for lane changes
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            MoveLane(false); // Move left
+        }
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            MoveLane(true); // Move right
+        }
+
+        // Jumping logic
         if (controller.isGrounded)
         {
-            direction.y = -1f; // Keep the player grounded
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                direction.y = jumpHeight;
+                verticalVelocity = jumpHeight;
             }
         }
+        else
+        {
+            verticalVelocity += gravity * Time.deltaTime; // Apply gravity when in air
+        }
 
-        // Apply gravity
-        direction.y += gravity * Time.deltaTime;
+        // Calculate the target position based on the desired lane
+        Vector3 targetPosition = transform.position.z * Vector3.forward;
+        if (desiredLane == 0)
+        {
+            targetPosition += Vector3.left * laneDistance;
+        }
+        else if (desiredLane == 2)
+        {
+            targetPosition += Vector3.right * laneDistance;
+        }
 
-        // Move the player
-        controller.Move(direction * Time.deltaTime);
+        // Smoothly move the player to the target lane
+        Vector3 moveDirection = Vector3.forward * baseSpeed + Vector3.up * verticalVelocity;
+        controller.Move(moveDirection * Time.deltaTime);
+
+        // Move horizontally (lane movement)
+        Vector3 horizontalMove = Vector3.Lerp(transform.position, targetPosition, 10 * Time.deltaTime);
+        controller.Move((horizontalMove - transform.position));
     }
 
-    void SetSpeedBasedOnLevel()
+    private void MoveLane(bool goingRight)
     {
-        if (LevelManager.currentLevel == 1)
-        {
-            speedMultiplier = 1f;
-        }
-        else if (LevelManager.currentLevel == 2)
-        {
-            speedMultiplier = 1.2f;
-        }
-        else if (LevelManager.currentLevel == 3)
-        {
-            speedMultiplier = 1.5f;
-        }
+        desiredLane += goingRight ? 1 : -1;
+        desiredLane = Mathf.Clamp(desiredLane, 0, 2); // Ensure player stays within lanes
     }
 }

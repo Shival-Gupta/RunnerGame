@@ -2,26 +2,26 @@ using UnityEngine;
 
 public class PowerUp : MonoBehaviour
 {
-    public float boost = 10f;
+    public float boostAmount = 10f;
     public float boostDuration = 5f;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            PlayerMovement playerMovement = other.GetComponent<PlayerMovement>();
-            if (playerMovement != null)
+            PlayerMovement player = other.GetComponent<PlayerMovement>();
+            if (player != null)
             {
-                StartCoroutine(ApplySpeedBoost(playerMovement));
+                StartCoroutine(ApplySpeedBoost(player));
             }
-            Destroy(gameObject); // Destroy the power-up object after pickup
+            Destroy(gameObject); // Destroy the power-up once collected
         }
     }
 
-    private System.Collections.IEnumerator ApplySpeedBoost(PlayerMovement playerMovement)
+    private System.Collections.IEnumerator ApplySpeedBoost(PlayerMovement player)
     {
-        playerMovement.boost += boost;
+        player.baseSpeed += boostAmount;
         yield return new WaitForSeconds(boostDuration);
-        playerMovement.boost -= boost;
+        player.baseSpeed -= boostAmount;
     }
 }
