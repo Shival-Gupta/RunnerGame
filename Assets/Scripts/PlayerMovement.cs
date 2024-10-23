@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float speedMultiplier = 1f;
     [SerializeField] private float laneDistance = 2f;
     [SerializeField] private float jumpForce = 5f;
+    [SerializeField] private float fallMultiplier = 2.5f; // New variable for fall speed
 
     [Header("Lane Management")]
     private int currentLane = 1; // 0 = Left, 1 = Middle, 2 = Right
@@ -21,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
     private PlayerInputActions inputActions;
     private bool jumpInput = false;
     private int moveInput = 0; // -1 for left, 1 for right
+    private bool isJumping = false; // Track if the player is currently jumping
 
     void Awake()
     {
@@ -68,10 +70,16 @@ public class PlayerMovement : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 10);
 
         // Jumping logic
-        if (jumpInput && rb.velocity.y == 0) // Check if grounded
+        if (jumpInput && !isJumping) // Check if jump input is received and player is not currently jumping
         {
             PerformJump();
             jumpInput = false; // Reset jump input after jumping
+        }
+
+        // Modify the downward velocity to implement fall multiplier
+        if (rb.velocity.y < 0) // While falling
+        {
+            rb.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
         }
 
         // Move the player using Rigidbody
@@ -99,7 +107,16 @@ public class PlayerMovement : MonoBehaviour
     {
         Debug.Log("Jumping with Impulse force: " + jumpForce);
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        isJumping = true; // Set jumping to true when jumping
+    }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        // Check if player has landed
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isJumping = false; // Set jumping to false when landing
+        }
     }
 
     public void IncreaseDifficulty()
@@ -133,7 +150,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnJump(InputAction.CallbackContext context)
     {
-        jumpInput = true;
-        Debug.Log("Jump input received");
+        if (context.performed) // Check if the action was performed
+        {
+            jumpInput = true; // Set jump input to true immediately
+            Debug.Log("Jump input received");
+        }
     }
 }

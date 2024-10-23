@@ -45,7 +45,8 @@ public class TerrainManager : MonoBehaviour
     {
         // Spawn terrain at the next spawn position
         GameObject terrain = Instantiate(terrainPrefabs[terrainIndex], nextSpawnPosition, Quaternion.identity, transform);
-        activeTerrains.Add(terrain);  // Add terrain to the active terrains list
+        terrain.tag = "Ground";         // Assign the Ground tag to the terrain
+        activeTerrains.Add(terrain);    // Add terrain to the active terrains list
 
         nextSpawnPosition.z += terrainLength;  // Move the spawn position forward for the next terrain
 

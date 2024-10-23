@@ -584,11 +584,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89f0f52770f9a864a89affcada2c5085, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseSpeed: 8
+  baseSpeed: 7.5
   speedMultiplier: 1
   laneDistance: 4.5
-  jumpForce: 5
-  jumpType: 0
+  jumpForce: 6
+  fallMultiplier: 2
 --- !u!54 &786165768
 Rigidbody:
   m_ObjectHideFlags: 0
