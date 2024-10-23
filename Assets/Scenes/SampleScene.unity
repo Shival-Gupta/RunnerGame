@@ -208,13 +208,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.13052616, y: -0, z: -0, w: 0.9914449}
-  m_LocalPosition: {x: 0, y: 6, z: -10.5}
+  m_LocalRotation: {x: 0.15212336, y: 0, z: 0, w: 0.98836154}
+  m_LocalPosition: {x: 0, y: 3, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 15, y: 0, z: 0}
+  m_Father: {fileID: 786165765}
+  m_LocalEulerAnglesHint: {x: 17.5, y: 0, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -410,9 +410,9 @@ MonoBehaviour:
   terrainPrefabs:
   - {fileID: 6335569547168849646, guid: 87a57c114b42ab541a30f2242359eaa2, type: 3}
   initialSpawnPosition: {x: -10, y: 0, z: 0}
-  maxInstances: 10
   terrainLength: 20
-  spawnTriggerDistance: 35
+  spawnTriggerDistance: 400
+  maxInstances: 25
 --- !u!4 &423680944
 Transform:
   m_ObjectHideFlags: 0
@@ -564,10 +564,11 @@ Transform:
   m_GameObject: {fileID: 786165761}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 5, z: 1.5}
+  m_LocalPosition: {x: 0, y: 5, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 330585546}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &786165766
@@ -582,7 +583,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89f0f52770f9a864a89affcada2c5085, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseSpeed: 5
+  baseSpeed: 8
   speedMultiplier: 1
   laneDistance: 2
 --- !u!143 &786165767
@@ -676,7 +677,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1170834757
 Transform:
   m_ObjectHideFlags: 0
@@ -708,8 +709,8 @@ MonoBehaviour:
   obstaclePrefabs:
   - {fileID: 3984039527880439494, guid: 29fa9f193c1abd24386d0ea768c1f666, type: 3}
   initialSpawnPosition: {x: 0, y: 0, z: 5}
-  maxInstances: 20
   spawnRate: 100
+  maxInstances: 20
 --- !u!850595691 &1395856681
 LightingSettings:
   m_ObjectHideFlags: 0
@@ -780,6 +781,5 @@ SceneRoots:
   m_Roots:
   - {fileID: 410087041}
   - {fileID: 832575519}
-  - {fileID: 330585546}
   - {fileID: 786165765}
   - {fileID: 605584559}

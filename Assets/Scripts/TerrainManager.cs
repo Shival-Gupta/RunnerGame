@@ -6,9 +6,9 @@ public class TerrainManager : MonoBehaviour
     public Transform playerTransform;         // Reference to player's transform
     public GameObject[] terrainPrefabs;       // Array of terrain prefabs
     public Vector3 initialSpawnPosition;      // Initial spawn position for terrains
-    public int maxInstances = 20;             // Maximum number of terrain segments
-    public float terrainLength = 30f;         // Length of each terrain segment
-    public float spawnTriggerDistance = 35f;  // Distance from player to spawn next terrain
+    public float terrainLength = 20f;         // Length of each terrain segment
+    public float spawnTriggerDistance = 400f;  // Distance from player to spawn next terrain
+    public int maxInstances = 25;             // Maximum number of terrain segments
 
     private Vector3 nextSpawnPosition;        // Tracks the next terrain spawn position
     private List<GameObject> activeTerrains = new List<GameObject>();

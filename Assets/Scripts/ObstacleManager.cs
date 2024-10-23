@@ -6,8 +6,8 @@ public class ObstacleManager : MonoBehaviour
     public Transform playerTransform;      // Reference to player's transform
     public GameObject[] obstaclePrefabs;   // Array of obstacle prefabs
     public Vector3 initialSpawnPosition;   // Initial spawn position for obstacles
-    public int maxInstances = 20;          // Maximum number of obstacles on screen
     public float spawnRate = 2f;           // Time interval between spawns
+    public int maxInstances = 20;          // Maximum number of obstacles on screen
 
     private List<GameObject> activeObstacles = new List<GameObject>();
 
