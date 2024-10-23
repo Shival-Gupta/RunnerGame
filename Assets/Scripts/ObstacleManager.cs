@@ -3,37 +3,37 @@ using UnityEngine;
 
 public class ObstacleManager : MonoBehaviour
 {
-    public GameObject[] obstaclePrefabs;        // Array of obstacles
-    public Transform playerTransform;           // Reference to the player
-    public float spawnDistance = 50f;           // Distance ahead of the player to spawn obstacles
-    public int maxInstances = 15;               // Max obstacles on screen
-    public float spawnRate = 2f;                // Time between spawns
-    public float laneDistance = 4f;             // Distance between lanes
+    public Transform playerTransform;      // Reference to player's transform
+    public GameObject[] obstaclePrefabs;   // Array of obstacle prefabs
+    public Vector3 initialSpawnPosition;   // Initial spawn position for obstacles
+    public int maxInstances = 20;          // Maximum number of obstacles on screen
+    public float spawnRate = 2f;           // Time interval between spawns
 
     private List<GameObject> activeObstacles = new List<GameObject>();
 
     void Start()
     {
-        InvokeRepeating("SpawnObstacle", 2f, spawnRate);
+        InvokeRepeating("SpawnObstacle", 1f, spawnRate);  // Repeatedly spawn obstacles
     }
 
     void SpawnObstacle()
     {
-        int randomLane = Random.Range(0, 3); // Choose a lane: 0=left, 1=center, 2=right
-        int randomIndex = Random.Range(0, obstaclePrefabs.Length); // Choose random obstacle
+        Vector3 spawnPos = new Vector3(
+            Random.Range(-2f, 2f), 0.5f, playerTransform.position.z + initialSpawnPosition.z
+        );
 
-        // Spawn position in the chosen lane, ahead of the player
-        Vector3 spawnPos = playerTransform.position + new Vector3((randomLane - 1) * laneDistance, 0, spawnDistance);
-        GameObject newObstacle = Instantiate(obstaclePrefabs[randomIndex], spawnPos, Quaternion.identity, transform);
-        activeObstacles.Add(newObstacle);
+        int prefabIndex = Random.Range(0, obstaclePrefabs.Length);
+        GameObject obstacle = Instantiate(obstaclePrefabs[prefabIndex], spawnPos, Quaternion.identity, transform);
+        activeObstacles.Add(obstacle);
 
+        // Maintain maximum obstacle limit
         if (activeObstacles.Count > maxInstances)
         {
-            DeleteOldestObstacle();
+            DestroyOldestObstacle();
         }
     }
 
-    void DeleteOldestObstacle()
+    void DestroyOldestObstacle()
     {
         Destroy(activeObstacles[0]);
         activeObstacles.RemoveAt(0);

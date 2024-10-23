@@ -3,48 +3,55 @@ using UnityEngine;
 
 public class TerrainManager : MonoBehaviour
 {
-    public GameObject[] terrainPrefabs;        // Array of terrain prefabs
-    public Transform playerTransform;          // Player reference
-    public float terrainLength = 30f;          // Length of each terrain
-    public int maxInstances = 15;              // Maximum number of terrain instances
-    public float spawnTriggerDistance = 30f;   // Distance from player to spawn the next terrain
+    public Transform playerTransform;         // Reference to player's transform
+    public GameObject[] terrainPrefabs;       // Array of terrain prefabs
+    public Vector3 initialSpawnPosition;      // Initial spawn position for terrains
+    public int maxInstances = 20;             // Maximum number of terrain segments
+    public float terrainLength = 30f;         // Length of each terrain segment
+    public float spawnTriggerDistance = 35f;  // Distance from player to spawn next terrain
 
-    private Vector3 nextSpawnPosition;         // Where the next terrain will be spawned
+    private Vector3 nextSpawnPosition;        // Tracks the next terrain spawn position
     private List<GameObject> activeTerrains = new List<GameObject>();
 
     void Start()
     {
-        nextSpawnPosition = playerTransform.position + new Vector3(0, 0, terrainLength); // Start a bit ahead
+        nextSpawnPosition = initialSpawnPosition;
 
-        // Spawn initial terrains
+        // Initial terrain spawning
         for (int i = 0; i < maxInstances; i++)
         {
             if (i == 0)
-                SpawnTerrain(0); // Always spawn the first one from the array
+                SpawnTerrain(0); // Spawn the first terrain
             else
-                SpawnTerrain(Random.Range(0, terrainPrefabs.Length));
+                SpawnTerrain(Random.Range(0, terrainPrefabs.Length)); // Spawn random terrains afterward
         }
     }
 
     void Update()
     {
-        // Check if the player is close to the next spawn trigger point
+        // Check if the player is close enough to spawn the next terrain
         if (playerTransform.position.z + spawnTriggerDistance > nextSpawnPosition.z)
         {
-            SpawnTerrain(Random.Range(0, terrainPrefabs.Length)); // Spawn new terrain
-            DeleteOldestTerrain(); // Remove the oldest one
+            SpawnTerrain(Random.Range(0, terrainPrefabs.Length)); // Spawn a new terrain randomly
+            if (activeTerrains.Count > maxInstances)
+            {
+                DeleteOldestTerrain();
+            }
         }
     }
 
-    void SpawnTerrain(int prefabIndex)
+    void SpawnTerrain(int terrainIndex)
     {
-        GameObject newTerrain = Instantiate(terrainPrefabs[prefabIndex], nextSpawnPosition, Quaternion.identity, transform);
-        activeTerrains.Add(newTerrain);
-        nextSpawnPosition.z += terrainLength; // Move to the next spawn point
+        // Spawn terrain at the next spawn position and set it as a child of the TerrainManager GameObject
+        GameObject terrain = Instantiate(terrainPrefabs[terrainIndex], nextSpawnPosition, Quaternion.identity, transform);
+        activeTerrains.Add(terrain);  // Add terrain to the active terrains list
+
+        nextSpawnPosition.z += terrainLength;  // Move the spawn position forward for the next terrain
     }
 
     void DeleteOldestTerrain()
     {
+        // Destroy the oldest terrain segment (first in the list)
         Destroy(activeTerrains[0]);
         activeTerrains.RemoveAt(0);
     }

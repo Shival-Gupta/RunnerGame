@@ -406,13 +406,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea5dade646c061c42a47f67a236c53e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerTransform: {fileID: 786165765}
   terrainPrefabs:
   - {fileID: 6335569547168849646, guid: 87a57c114b42ab541a30f2242359eaa2, type: 3}
-  playerTransform: {fileID: 786165765}
-  terrainLength: 20
-  numberOfTerrains: 5
-  maxInstances: 10
   initialSpawnPosition: {x: -10, y: 0, z: 0}
+  maxInstances: 10
+  terrainLength: 20
+  spawnTriggerDistance: 35
 --- !u!4 &423680944
 Transform:
   m_ObjectHideFlags: 0
@@ -583,8 +583,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseSpeed: 5
-  boost: 0
   speedMultiplier: 1
+  laneDistance: 2
 --- !u!143 &786165767
 CharacterController:
   m_ObjectHideFlags: 0
@@ -704,13 +704,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8a8311029c0be4458720a90ba7d8821, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstaclePrefab: {fileID: 3347955820425930081, guid: 29fa9f193c1abd24386d0ea768c1f666,
-    type: 3}
   playerTransform: {fileID: 786165765}
-  spawnRate: 100
-  spawnDistance: 30
-  initialSpawnPosition: {x: 0, y: 0, z: 0}
+  obstaclePrefabs:
+  - {fileID: 3984039527880439494, guid: 29fa9f193c1abd24386d0ea768c1f666, type: 3}
+  initialSpawnPosition: {x: 0, y: 0, z: 5}
   maxInstances: 20
+  spawnRate: 100
 --- !u!850595691 &1395856681
 LightingSettings:
   m_ObjectHideFlags: 0
@@ -781,6 +780,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 410087041}
   - {fileID: 832575519}
-  - {fileID: 605584559}
   - {fileID: 330585546}
   - {fileID: 786165765}
+  - {fileID: 605584559}
