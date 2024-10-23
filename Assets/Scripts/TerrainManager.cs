@@ -9,7 +9,7 @@ public class TerrainManager : MonoBehaviour
     public float terrainLength = 50f;         // Length of each terrain segment
     public float spawnTriggerDistance = 30f;  // Distance from player to spawn next terrain
     public int maxInstances = 5;              // Maximum number of terrain segments
-    public ObstacleManager obstacleManager;   // Reference to the ObstacleManager
+    public ItemManager itemManager;           // Reference to the ItemManager
 
     private Vector3 nextSpawnPosition;        // Tracks the next terrain spawn position
     private List<GameObject> activeTerrains = new List<GameObject>();  // List of active terrain segments
@@ -45,26 +45,24 @@ public class TerrainManager : MonoBehaviour
     {
         // Spawn terrain at the next spawn position
         GameObject terrain = Instantiate(terrainPrefabs[terrainIndex], nextSpawnPosition, Quaternion.identity, transform);
-        terrain.tag = "Ground";         // Assign the Ground tag to the terrain
-        activeTerrains.Add(terrain);    // Add terrain to the active terrains list
+        activeTerrains.Add(terrain);  // Add terrain to the active terrains list
 
         nextSpawnPosition.z += terrainLength;  // Move the spawn position forward for the next terrain
 
-        // Spawn obstacles on the new terrain using the ObstacleManager
-        if (obstacleManager != null)
+        // Call ItemManager to spawn coins, powerups, and obstacles on the new terrain
+        if (itemManager != null)
         {
-            obstacleManager.terrainLength = terrainLength;  // Set terrain length for obstacle spawning
-            obstacleManager.SpawnObstacles(terrain);
+            itemManager.SpawnItems(terrain);
         }
     }
 
     void DeleteOldestTerrain()
     {
-        // Destroy the oldest terrain segment and remove associated obstacles
+        // Destroy the oldest terrain segment and remove associated items
         GameObject oldestTerrain = activeTerrains[0];
-        if (obstacleManager != null)
+        if (itemManager != null)
         {
-            obstacleManager.RemoveObstaclesFromTerrain(oldestTerrain);  // Remove obstacles from this terrain
+            itemManager.RemoveItemsFromTerrain(oldestTerrain);  // Remove items from this terrain
         }
         Destroy(oldestTerrain);
         activeTerrains.RemoveAt(0);

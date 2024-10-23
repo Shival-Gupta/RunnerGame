@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
     public static PlayerMovement instance;
 
     [Header("Movement Settings")]
-    [SerializeField] public float baseSpeed = 5f;
+    [SerializeField] [Range(1f, 50f)] public float baseSpeed = 5f;
     [SerializeField] private float speedMultiplier = 1f;
     [SerializeField] private float laneDistance = 2f;
     [SerializeField] private float jumpForce = 5f;
