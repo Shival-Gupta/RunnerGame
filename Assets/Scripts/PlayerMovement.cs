@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpForce = 5f;
 
     [Header("Lane Management")]
-    private int currentLane = 1;  // 0 = Left, 1 = Middle, 2 = Right
+    private int currentLane = 1; // 0 = Left, 1 = Middle, 2 = Right
 
     private Rigidbody rb;
     private Vector3 direction;
@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
     private bool jumpInput = false;
     private int moveInput = 0; // -1 for left, 1 for right
 
-    private void Awake()
+    void Awake()
     {
         if (instance == null)
         {
@@ -33,33 +33,29 @@ public class PlayerMovement : MonoBehaviour
             Destroy(gameObject);
         }
 
-        // Initialize the input actions
         inputActions = new PlayerInputActions();
-
-        // Register input callbacks
         inputActions.Player.Move.performed += OnMove;
         inputActions.Player.Move.canceled += OnMoveCanceled;
         inputActions.Player.Jump.performed += OnJump;
     }
 
-    private void OnEnable()
+    void OnEnable()
     {
         inputActions.Player.Enable();
     }
 
-    private void OnDisable()
+    void OnDisable()
     {
         inputActions.Player.Disable();
     }
 
-    private void Start()
+    void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true; // Prevent the Rigidbody from rotating
         Debug.Log("PlayerMovement initialized. Current Lane: " + currentLane);
     }
 
-    private void FixedUpdate()
+    void Update()
     {
         // Forward movement
         direction.z = baseSpeed * speedMultiplier;
@@ -69,18 +65,17 @@ public class PlayerMovement : MonoBehaviour
 
         // Smooth lane transition
         Vector3 targetPosition = new Vector3((currentLane - 1) * laneDistance, transform.position.y, transform.position.z);
-        Vector3 smoothPosition = Vector3.Lerp(transform.position, targetPosition, Time.fixedDeltaTime * 10);
-
-        // Move the player with Rigidbody
-        rb.MovePosition(smoothPosition + direction * Time.fixedDeltaTime);
+        transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 10);
 
         // Jumping logic
-        if (jumpInput && IsGrounded())
+        if (jumpInput && rb.velocity.y == 0) // Check if grounded
         {
-            Debug.Log("Jumping with force: " + jumpForce);
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            PerformJump();
             jumpInput = false; // Reset jump input after jumping
         }
+
+        // Move the player using Rigidbody
+        rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, direction.z);
     }
 
     private void HandleLaneMovement()
@@ -100,16 +95,17 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void IncreaseDifficulty()
+    private void PerformJump()
     {
-        speedMultiplier += 0.1f;  // Increase player speed
-        Debug.Log("Increased difficulty. New speed multiplier: " + speedMultiplier);
+        Debug.Log("Jumping with Impulse force: " + jumpForce);
+        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+
     }
 
-    private bool IsGrounded()
+    public void IncreaseDifficulty()
     {
-        // Adjust the raycast length based on your player height and collider size
-        return Physics.Raycast(transform.position, Vector3.down, 1.1f);
+        speedMultiplier += 0.1f; // Increase player speed
+        Debug.Log("Increased difficulty. New speed multiplier: " + speedMultiplier);
     }
 
     // Input System Callbacks
