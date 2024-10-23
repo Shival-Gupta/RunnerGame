@@ -586,7 +586,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseSpeed: 8
   speedMultiplier: 1
-  laneDistance: 2
+  laneDistance: 5
+  jumpForce: 5.5
+  gravity: -9.81
 --- !u!143 &786165767
 CharacterController:
   m_ObjectHideFlags: 0
