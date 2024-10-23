@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
 {
     public static PlayerMovement instance;
@@ -10,19 +11,18 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float speedMultiplier = 1f;
     [SerializeField] private float laneDistance = 2f;
     [SerializeField] private float jumpForce = 5f;
-    [SerializeField] private float gravity = -9.81f;
 
     [Header("Lane Management")]
     private int currentLane = 1;  // 0 = Left, 1 = Middle, 2 = Right
 
-    private CharacterController controller;
+    private Rigidbody rb;
     private Vector3 direction;
-    
+
     private PlayerInputActions inputActions;
     private bool jumpInput = false;
     private int moveInput = 0; // -1 for left, 1 for right
 
-    void Awake()
+    private void Awake()
     {
         if (instance == null)
         {
@@ -33,6 +33,7 @@ public class PlayerMovement : MonoBehaviour
             Destroy(gameObject);
         }
 
+        // Initialize the input actions
         inputActions = new PlayerInputActions();
 
         // Register input callbacks
@@ -41,23 +42,24 @@ public class PlayerMovement : MonoBehaviour
         inputActions.Player.Jump.performed += OnJump;
     }
 
-    void OnEnable()
+    private void OnEnable()
     {
         inputActions.Player.Enable();
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         inputActions.Player.Disable();
     }
 
-    void Start()
+    private void Start()
     {
-        controller = GetComponent<CharacterController>();
+        rb = GetComponent<Rigidbody>();
+        rb.freezeRotation = true; // Prevent the Rigidbody from rotating
         Debug.Log("PlayerMovement initialized. Current Lane: " + currentLane);
     }
 
-    void Update()
+    private void FixedUpdate()
     {
         // Forward movement
         direction.z = baseSpeed * speedMultiplier;
@@ -65,28 +67,20 @@ public class PlayerMovement : MonoBehaviour
         // Lane movement
         HandleLaneMovement();
 
-        // Jumping logic
-        if (controller.isGrounded)
-        {
-            if (jumpInput)
-            {
-                Debug.Log("Jumping with force: " + jumpForce);
-                direction.y = jumpForce;
-                jumpInput = false; // Reset jump input after jumping
-            }
-        }
-
-        // Apply gravity
-        direction.y += gravity * Time.deltaTime;
-
-        // Move the player
-        controller.Move(direction * Time.deltaTime);
-        
-        // Smooth lane transition after moving
+        // Smooth lane transition
         Vector3 targetPosition = new Vector3((currentLane - 1) * laneDistance, transform.position.y, transform.position.z);
-        transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 10);
+        Vector3 smoothPosition = Vector3.Lerp(transform.position, targetPosition, Time.fixedDeltaTime * 10);
 
-        Debug.Log("Moving player. Current position: " + transform.position);
+        // Move the player with Rigidbody
+        rb.MovePosition(smoothPosition + direction * Time.fixedDeltaTime);
+
+        // Jumping logic
+        if (jumpInput && IsGrounded())
+        {
+            Debug.Log("Jumping with force: " + jumpForce);
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            jumpInput = false; // Reset jump input after jumping
+        }
     }
 
     private void HandleLaneMovement()
@@ -110,6 +104,12 @@ public class PlayerMovement : MonoBehaviour
     {
         speedMultiplier += 0.1f;  // Increase player speed
         Debug.Log("Increased difficulty. New speed multiplier: " + speedMultiplier);
+    }
+
+    private bool IsGrounded()
+    {
+        // Adjust the raycast length based on your player height and collider size
+        return Physics.Raycast(transform.position, Vector3.down, 1.1f);
     }
 
     // Input System Callbacks

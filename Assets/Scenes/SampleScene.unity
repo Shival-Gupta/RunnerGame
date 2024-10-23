@@ -586,7 +586,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseSpeed: 8
   speedMultiplier: 1
-  laneDistance: 5
+  laneDistance: 4.5
   jumpForce: 5.5
   gravity: -9.81
 --- !u!143 &786165767
@@ -711,7 +711,7 @@ MonoBehaviour:
   obstaclePrefabs:
   - {fileID: 3984039527880439494, guid: 29fa9f193c1abd24386d0ea768c1f666, type: 3}
   obstaclesPerTerrain: 4
-  laneWidth: 5
+  laneWidth: 4.5
   terrainLength: 20
 --- !u!850595691 &1395856681
 LightingSettings:
