@@ -81,6 +81,10 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
         }
+        else if (rb.velocity.y > 0)
+        {
+            rb.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+        }
 
         // Move the player using Rigidbody
         rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, direction.z);

@@ -411,8 +411,8 @@ MonoBehaviour:
   - {fileID: 6335569547168849646, guid: 87a57c114b42ab541a30f2242359eaa2, type: 3}
   initialSpawnPosition: {x: -10, y: 0, z: 0}
   terrainLength: 20
-  spawnTriggerDistance: 400
-  maxInstances: 25
+  spawnTriggerDistance: 250
+  maxInstances: 15
   obstacleManager: {fileID: 1170834758}
 --- !u!4 &423680944
 Transform:
@@ -587,7 +587,7 @@ MonoBehaviour:
   baseSpeed: 7.5
   speedMultiplier: 1
   laneDistance: 4.5
-  jumpForce: 6
+  jumpForce: 6.5
   fallMultiplier: 2
 --- !u!54 &786165768
 Rigidbody:
@@ -676,7 +676,7 @@ GameObject:
   - component: {fileID: 1170834757}
   - component: {fileID: 1170834758}
   m_Layer: 0
-  m_Name: ObstacleManager
+  m_Name: ItemManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
