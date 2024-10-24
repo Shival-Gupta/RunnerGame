@@ -2,14 +2,21 @@ using UnityEngine;
 
 public class Coin : MonoBehaviour
 {
-    public int coinValue = 1;
+    private Transform player;
+    public float despawnDistance = 10f;   // Distance behind the player to despawn
 
-    private void OnTriggerEnter(Collider other)
+    void Start()
     {
-        if (other.CompareTag("Player"))
+        player = GameObject.FindWithTag("Player").transform;  // Assuming player has the tag "Player"
+    }
+
+    void Update()
+    {
+        // Check if the coin is behind the player and despawn
+        if (player != null && player.position.z - transform.position.z > despawnDistance)
         {
-            GameManager.instance.AddScore(coinValue);
             Destroy(gameObject);
+            Debug.Log("Coin despawned.");
         }
     }
 }

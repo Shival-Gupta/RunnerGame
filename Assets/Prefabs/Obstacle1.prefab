@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 3137881900102370704}
   - component: {fileID: 2453321252320197014}
   - component: {fileID: 3494234348305831546}
+  - component: {fileID: 1229589723541402962}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Ground
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -105,6 +106,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1229589723541402962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3730517100854062769}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9a5d2bae4069834782502da9ce8a05f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  despawnDistance: 10
 --- !u!1 &3984039527880439494
 GameObject:
   m_ObjectHideFlags: 0
@@ -116,7 +130,7 @@ GameObject:
   - component: {fileID: 7590378311459507563}
   m_Layer: 0
   m_Name: Obstacle1
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

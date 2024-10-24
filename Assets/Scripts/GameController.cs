@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+using TMPro;
 
 public class GameController : MonoBehaviour
 {
@@ -9,6 +9,7 @@ public class GameController : MonoBehaviour
     // Player properties
     public int playerLives = 3;  // Starting number of lives
     public int playerScore = 0;   // Initial score
+    public int coinValue = 100;   // Value for each collected coin
 
     // Level properties
     public float[] levelTimes = { 30f, 60f, 120f }; // Time for each level
@@ -16,8 +17,8 @@ public class GameController : MonoBehaviour
     private float levelTimer;
 
     // UI elements
-    public Text levelText;
-    public Text timerText;
+    public TMP_Text levelText;
+    public TMP_Text timerText;
     public GameObject gameOverUI;
 
     private void Awake()
@@ -52,13 +53,13 @@ public class GameController : MonoBehaviour
     public void AddScore(int value)
     {
         playerScore += value;
-        UIController.instance.UpdateScore(playerScore); // Assuming UIController manages UI updates
+        UIController.instance.UpdateScore(playerScore); // Update the UI with the new score
     }
 
     public void ReduceLife()
     {
         playerLives--;
-        UIController.instance.UpdateLives(playerLives); // Assuming UIController manages UI updates
+        UIController.instance.UpdateLives(playerLives); // Update UI with lives
 
         if (playerLives <= 0)
         {
@@ -82,7 +83,6 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            // Handle end of game or victory
             Debug.Log("Game Completed!"); // Placeholder for victory logic
         }
     }

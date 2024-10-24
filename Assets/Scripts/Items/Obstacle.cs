@@ -2,12 +2,21 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider other)
+    private Transform player;
+    public float despawnDistance = 10f;   // Distance behind the player to despawn
+
+    void Start()
     {
-        if (other.CompareTag("Player"))
+        player = GameObject.FindWithTag("Player").transform;  // Assuming player has the tag "Player"
+    }
+
+    void Update()
+    {
+        // Check if the obstacle is behind the player and despawn
+        if (player != null && player.position.z - transform.position.z > despawnDistance)
         {
-            GameManager.instance.ReduceLife();
             Destroy(gameObject);
+            Debug.Log("Obstacle despawned.");
         }
     }
 }

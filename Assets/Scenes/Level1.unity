@@ -168,12 +168,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerLives: 3
   playerScore: 0
+  coinValue: 100
   levelTimes:
   - 30
   - 60
   - 120
-  levelText: {fileID: 0}
-  timerText: {fileID: 0}
+  levelText: {fileID: 1434004182}
+  timerText: {fileID: 1997789905}
   gameOverUI: {fileID: 663937427}
 --- !u!1 &159419729
 GameObject:
@@ -755,7 +756,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -100, y: -25}
+  m_AnchoredPosition: {x: -150, y: -25}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &568609966
@@ -934,10 +935,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 989f2de2ae53606449611c60d00d70f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreText: {fileID: 0}
-  coinText: {fileID: 0}
-  lifeIcons: []
-  playerTransform: {fileID: 0}
+  scoreText: {fileID: 568609966}
+  livesText: {fileID: 159419731}
 --- !u!1 &786165761
 GameObject:
   m_ObjectHideFlags: 0
@@ -955,7 +954,7 @@ GameObject:
   - component: {fileID: 786165769}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1063,8 +1062,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseSpeed: 7.5
   speedMultiplier: 1
-  laneDistance: 4.5
-  jumpForce: 6.5
+  laneDistance: 2
+  jumpForce: 10
   fallMultiplier: 2
 --- !u!54 &786165768
 Rigidbody:
@@ -1198,17 +1197,142 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8a8311029c0be4458720a90ba7d8821, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerupPrefabs: []
-  obstaclePrefabs:
-  - {fileID: 3984039527880439494, guid: 29fa9f193c1abd24386d0ea768c1f666, type: 3}
   coinPrefab: {fileID: 1505634315623148312, guid: 8dea91755c4801849a49beb928ef82a1,
     type: 3}
+  obstaclePrefabs:
+  - {fileID: 3984039527880439494, guid: 29fa9f193c1abd24386d0ea768c1f666, type: 3}
   maxCoins: 10
-  maxPowerups: 0
   maxObstacles: 5
+  maxCoinInstances: 30
+  maxObstacleInstances: 20
   coinSpawnChance: 0.7
-  powerupSpawnChance: 0.2
   obstacleSpawnChance: 0.5
+  laneWidth: 2
+  terrainLength: 20
+--- !u!1 &1291949757
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1291949758}
+  - component: {fileID: 1291949761}
+  - component: {fileID: 1291949760}
+  - component: {fileID: 1291949759}
+  - component: {fileID: 1291949762}
+  m_Layer: 0
+  m_Name: Destroyer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1291949758
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291949757}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 3, z: -14}
+  m_LocalScale: {x: 50, y: 50, z: 50}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!64 &1291949759
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291949757}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &1291949760
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291949757}
+  m_Enabled: 0
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1291949761
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291949757}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1291949762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1291949757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75e73658f53bcbc4c94bad78190e524c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyCoins: 1
+  destroyObstacles: 1
+  destroyTerrain: 0
+  player: {fileID: 786165765}
+  zOffset: -15
 --- !u!850595691 &1395856681
 LightingSettings:
   m_ObjectHideFlags: 0
@@ -1511,7 +1635,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -100, y: -65}
+  m_AnchoredPosition: {x: -150, y: -65}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1997789905
@@ -1617,6 +1741,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 410087041}
   - {fileID: 832575519}
+  - {fileID: 1291949758}
   - {fileID: 786165765}
   - {fileID: 605584559}
   - {fileID: 553825976}

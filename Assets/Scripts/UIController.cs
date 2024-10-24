@@ -1,19 +1,16 @@
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 public class UIController : MonoBehaviour
 {
     public static UIController instance;
 
     [Header("UI Elements")]
-    public Text scoreText; // Text for score
-    public Text coinText; // Text for coins
-    public Image[] lifeIcons; // Array of heart icons
+    public TMP_Text scoreText; // Text for score
+    public TMP_Text livesText; // Text for lives
 
-    private float score = 0f;
-    private int coins = 0;
-    public Transform playerTransform; // Reference to player for calculating score based on distance traveled
-    private Vector3 initialPosition;
+    private int totalScore = 0; // Track total score
+    private int coins = 0; // Track coins collected
 
     private void Awake()
     {
@@ -31,40 +28,25 @@ public class UIController : MonoBehaviour
 
     private void Start()
     {
-        initialPosition = playerTransform.position;
         UpdateScore(0); // Initialize score display
-        UpdateCoins(0); // Initialize coin display
-    }
-
-    private void Update()
-    {
-        // Update score based on the distance player has traveled
-        score = (playerTransform.position.z - initialPosition.z) * 0.1f; // Scale down the score
-        UpdateScore(Mathf.FloorToInt(score)); // Update score display in UI
+        UpdateLives(GameController.instance.playerLives); // Initialize lives display
     }
 
     public void UpdateScore(int newScore)
     {
-        scoreText.text = "Score: " + newScore;
+        totalScore = newScore; // Update total score
+        scoreText.text = "Score: " + totalScore;
     }
 
-    public void UpdateCoins(int amount)
+    public void CollectCoin()
     {
-        coins += amount;
-        coinText.text = "Coins: " + coins;
+        coins++;
+        UpdateScore(totalScore + GameController.instance.coinValue); // Update score with coin value
     }
 
     public void UpdateLives(int lives)
     {
-        for (int i = 0; i < lifeIcons.Length; i++)
-        {
-            lifeIcons[i].enabled = i < lives; // Enable/disable hearts based on remaining lives
-        }
-    }
-
-    public float GetScore()
-    {
-        return score;
+        livesText.text = "Lives: " + "♥♥♥♥♥".Substring(0, lives); // Display hearts for lives
     }
 
     public int GetCoins()

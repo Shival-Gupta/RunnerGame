@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6865817561065087906}
   m_Layer: 0
   m_Name: Coin1
-  m_TagString: Untagged
+  m_TagString: Coin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -44,9 +44,10 @@ GameObject:
   - component: {fileID: 3956522821171119134}
   - component: {fileID: 3264714006749881896}
   - component: {fileID: 8946479471979965762}
+  - component: {fileID: 6696270132739872078}
   m_Layer: 0
   m_Name: Cylinder
-  m_TagString: Untagged
+  m_TagString: Coin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -139,3 +140,16 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+--- !u!114 &6696270132739872078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5694324365845114052}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 149eb85dd4ed92a4a9dda50d91e95e58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  despawnDistance: 10

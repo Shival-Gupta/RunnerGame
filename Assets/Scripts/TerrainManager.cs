@@ -60,10 +60,10 @@ public class TerrainManager : MonoBehaviour
     {
         // Destroy the oldest terrain segment and remove associated items
         GameObject oldestTerrain = activeTerrains[0];
-        if (itemManager != null)
-        {
-            itemManager.RemoveItemsFromTerrain(oldestTerrain);  // Remove items from this terrain
-        }
+        // if (itemManager != null)
+        // {
+        //     itemManager.RemoveItemsFromTerrain(oldestTerrain);  // Remove items from this terrain
+        // }
         Destroy(oldestTerrain);
         activeTerrains.RemoveAt(0);
     }
