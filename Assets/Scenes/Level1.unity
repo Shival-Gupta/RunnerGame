@@ -157,7 +157,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -171,7 +171,7 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 13091317}
   m_Enabled: 0
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
@@ -222,7 +222,7 @@ Transform:
   m_GameObject: {fileID: 13091317}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 15, z: 0}
+  m_LocalPosition: {x: 0, y: 15, z: -15}
   m_LocalScale: {x: 50, y: 50, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -293,9 +293,9 @@ MonoBehaviour:
   playerScore: 0
   coinValue: 100
   levelTimes:
-  - 30
-  - 60
-  - 120
+  - 2
+  - 3
+  - 4
   levelText: {fileID: 1434004182}
   timerText: {fileID: 1997789905}
   gameOverUI: {fileID: 663937427}

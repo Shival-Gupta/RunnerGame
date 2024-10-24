@@ -58,14 +58,23 @@ public class GameController : MonoBehaviour
 
     public void ReduceLife()
     {
-        playerLives--;
-        UIController.instance.UpdateLives(playerLives); // Update UI with lives
-
-        if (playerLives <= 0)
+        if (playerLives > 0) // Only reduce lives if greater than zero
         {
-            GameOver();
+            playerLives--;
+            UIController.instance.UpdateLives(playerLives); // Update UI with lives
+            Debug.Log("Life reduced. Current lives: " + playerLives);
+
+            if (playerLives <= 0)
+            {
+                GameOver(); // Call GameOver if lives reach zero
+            }
+        }
+        else
+        {
+            Debug.Log("No lives left to reduce."); // Optional: Log message for debugging
         }
     }
+
 
     private void StartLevel()
     {
@@ -94,8 +103,8 @@ public class GameController : MonoBehaviour
 
     private void GameOver()
     {
-        gameOverUI.SetActive(true); // Show Game Over screen
-        Time.timeScale = 0; // Pause the game
+        // Load the GameOver scene
+        SceneManager.LoadScene("GameOverScene"); // Make sure the scene name matches
     }
 
     public void Retry()

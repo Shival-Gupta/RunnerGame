@@ -12,10 +12,9 @@ public class PlayerInteraction : MonoBehaviour
         }
         else if (other.CompareTag("Obstacle"))
         {
-            HitObstacle(); // Hit the obstacle
+            HitObstacle(other); // Pass the collider of the obstacle to HitObstacle
         }
     }
-
 
     private void CollectCoin(GameObject coin)
     {
@@ -27,9 +26,15 @@ public class PlayerInteraction : MonoBehaviour
         Debug.Log("Coin collected!");
     }
 
-    private void HitObstacle()
+    private void HitObstacle(Collider obstacle)
     {
         GameController.instance.ReduceLife(); // Reduce player lives
-        Debug.Log("Hit an obstacle!");
+        Debug.Log("Hit an obstacle! Lives remaining: " + GameController.instance.playerLives);
+
+        // Disable the collider to prevent further collisions
+        obstacle.enabled = false; // Disable collider
+
+        // Destroy the obstacle GameObject
+        Destroy(obstacle.gameObject); // This will destroy the obstacle GameObject
     }
 }

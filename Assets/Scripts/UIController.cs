@@ -46,8 +46,14 @@ public class UIController : MonoBehaviour
 
     public void UpdateLives(int lives)
     {
+        if (lives < 0) // Prevent negative lives from being displayed
+        {
+            lives = 0; // Set lives to 0 if it is negative
+        }
+
         livesText.text = "Lives: " + "♥♥♥♥♥".Substring(0, lives); // Display hearts for lives
     }
+
 
     public int GetCoins()
     {
