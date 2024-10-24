@@ -4,6 +4,8 @@ public class PlayerInteraction : MonoBehaviour
 {
     void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Triggered with: " + other.gameObject.name); // Log the object name
+
         if (other.CompareTag("Coin"))
         {
             CollectCoin(other.gameObject); // Collect the coin
@@ -14,13 +16,14 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
+
     private void CollectCoin(GameObject coin)
     {
         Destroy(coin); // Destroy the coin object
         // Update UI for collected coin
-        UIController.instance.CollectCoin(); 
+        UIController.instance.CollectCoin();
         // Update score
-        GameController.instance.AddScore(GameController.instance.coinValue); 
+        GameController.instance.AddScore(GameController.instance.coinValue);
         Debug.Log("Coin collected!");
     }
 

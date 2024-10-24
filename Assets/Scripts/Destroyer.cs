@@ -23,6 +23,7 @@ public class Destroyer : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Triggered with: " + other.gameObject.name);
         // Check if the object is a coin and if destruction is enabled for coins
         if (other.CompareTag("Coin") && destroyCoins)
         {

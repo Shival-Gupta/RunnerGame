@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float speedMultiplier = 1f;
     [SerializeField] private float laneDistance = 2f;
     [SerializeField] private float jumpForce = 5f;
-    [SerializeField] private float fallMultiplier = 2.5f; // New variable for fall speed
+    [SerializeField] private float fallMultiplier = 2.5f; // Variable for fall speed
 
     [Header("Lane Management")]
     private int currentLane = 1; // 0 = Left, 1 = Middle, 2 = Right
@@ -20,9 +20,8 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 direction;
 
     private PlayerInputActions inputActions;
-    private bool jumpInput = false;
     private int moveInput = 0; // -1 for left, 1 for right
-    private bool isJumping = false; // Track if the player is currently jumping
+    private bool isGrounded = false; // Track if the player is currently grounded
 
     void Awake()
     {
@@ -69,19 +68,8 @@ public class PlayerMovement : MonoBehaviour
         Vector3 targetPosition = new Vector3((currentLane - 1) * laneDistance, transform.position.y, transform.position.z);
         transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 10);
 
-        // Jumping logic
-        if (jumpInput && !isJumping) // Check if jump input is received and player is not currently jumping
-        {
-            PerformJump();
-            jumpInput = false; // Reset jump input after jumping
-        }
-
         // Modify the downward velocity to implement fall multiplier
         if (rb.velocity.y < 0) // While falling
-        {
-            rb.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
-        }
-        else if (rb.velocity.y > 0)
         {
             rb.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
         }
@@ -107,19 +95,27 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void PerformJump()
+    private void OnJump(InputAction.CallbackContext context)
+    {
+        if (context.performed && isGrounded) // Check if jump input is received and player is grounded
+        {
+            Jump();
+        }
+    }
+
+    private void Jump()
     {
         Debug.Log("Jumping with Impulse force: " + jumpForce);
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-        isJumping = true; // Set jumping to true when jumping
+        isGrounded = false; // Set grounded to false when jumping
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        // Check if player has landed
-        if (collision.gameObject.CompareTag("Ground"))
+        // Check if player has landed on the terrain
+        if (collision.gameObject.CompareTag("Terrain"))
         {
-            isJumping = false; // Set jumping to false when landing
+            isGrounded = true; // Set grounded to true when landing
         }
     }
 
@@ -150,14 +146,5 @@ public class PlayerMovement : MonoBehaviour
     {
         moveInput = 0;
         Debug.Log("Move input canceled");
-    }
-
-    private void OnJump(InputAction.CallbackContext context)
-    {
-        if (context.performed) // Check if the action was performed
-        {
-            jumpInput = true; // Set jump input to true immediately
-            Debug.Log("Jump input received");
-        }
     }
 }
