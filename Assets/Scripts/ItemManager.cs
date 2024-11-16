@@ -1,91 +1,118 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ItemManager : MonoBehaviour
 {
-    [Header("Item Prefabs")]
-    public GameObject coinPrefab;        // Coin prefab
-    public GameObject[] obstaclePrefabs; // Array of obstacle prefabs
+    [Header("Prefabs")]
+    public GameObject coinPrefab;
+    public GameObject[] obstaclePrefabs;
 
-    [Header("Item Spawn Settings")]
-    public int maxCoins = 10;              // Maximum number of coins per terrain
-    public int maxObstacles = 5;           // Maximum number of obstacles per terrain
-    public int maxCoinInstances = 30;      // Maximum total coin instances
-    public int maxObstacleInstances = 20;  // Maximum total obstacle instances
-    public float coinSpawnChance = 0.7f;   // Chance to spawn a coin
-    public float obstacleSpawnChance = 0.5f;// Chance to spawn an obstacle
+    [Header("Spawn Settings")]
+    public int maxCoins = 10;
+    public int maxObstacles = 5;
+    public float coinSpawnChance = 0.7f;
+    public float obstacleSpawnChance = 0.5f;
+    public float itemCleanupDistance = 20f; // Distance behind player to cleanup
 
-    [Header("Lane Settings")]
-    public float laneWidth = 2f;          // Width of each lane
-    public float terrainLength = 20f;     // Length of each terrain
+    private Transform player;
+    private Transform coinsParent;
+    private Transform obstaclesParent;
 
-    private List<GameObject> activeCoins = new List<GameObject>();      // List of active coins
-    private List<GameObject> activeObstacles = new List<GameObject>();  // List of active obstacles
-    private Transform player;              // Reference to the player
+    // Three lane positions: Left, Middle, Right
+    private readonly float[] lanePositions = new float[] { -4f, 0f, 4f };
 
-    private readonly float[] lanePositions = new float[] { -2f, 0f, 2f }; // Fixed lane positions
-
-    void Start()
+    void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        if (!player)
+            Debug.LogError("Player not found! Ensure it has the 'Player' tag.");
 
-        if (player == null)
+        // Find or create global parents
+        coinsParent = GameObject.Find("CoinsParent")?.transform;
+        if (coinsParent == null)
         {
-            Debug.LogError("Player object not found. Ensure the Player has the 'Player' tag.");
+            coinsParent = new GameObject("CoinsParent").transform;
+            coinsParent.parent = transform;
+            coinsParent.position = Vector3.zero;
         }
-    }
 
-    void Update()
-    {
-        // No longer need to despawn items here
+        obstaclesParent = GameObject.Find("ObstaclesParent")?.transform;
+        if (obstaclesParent == null)
+        {
+            obstaclesParent = new GameObject("ObstaclesParent").transform;
+            obstaclesParent.parent = transform;
+            obstaclesParent.position = Vector3.zero;
+        }
     }
 
     public void SpawnItems(GameObject terrain)
     {
-        Debug.Log($"Spawning items on terrain: {terrain.name}");
-
-        if (activeCoins.Count < maxCoinInstances)
-            SpawnCoins(terrain);
-
-        if (activeObstacles.Count < maxObstacleInstances)
-            SpawnObstacles(terrain);
+        SpawnCoins(terrain);
+        SpawnObstacles(terrain);
     }
 
     private void SpawnCoins(GameObject terrain)
     {
-        Debug.Log("Attempting to spawn coins...");
         for (int i = 0; i < maxCoins; i++)
         {
             if (Random.value <= coinSpawnChance)
             {
-                Vector3 spawnPosition = GetRandomLaneSpawnPosition(terrain);
-                GameObject coin = Instantiate(coinPrefab, spawnPosition, Quaternion.identity);
-                activeCoins.Add(coin);
-                Debug.Log($"Coin spawned at: {spawnPosition}");
+                Vector3 spawnPosition = GetLaneSpawnPosition(terrain);
+                Instantiate(coinPrefab, spawnPosition, Quaternion.identity, coinsParent);
             }
         }
     }
 
     private void SpawnObstacles(GameObject terrain)
     {
-        Debug.Log("Attempting to spawn obstacles...");
+        if (obstaclePrefabs.Length == 0)
+            return;
+
         for (int i = 0; i < maxObstacles; i++)
         {
-            if (Random.value <= obstacleSpawnChance && obstaclePrefabs.Length > 0)
+            if (Random.value <= obstacleSpawnChance)
             {
-                Vector3 spawnPosition = GetRandomLaneSpawnPosition(terrain);
-                GameObject obstacle = Instantiate(obstaclePrefabs[Random.Range(0, obstaclePrefabs.Length)], spawnPosition, Quaternion.identity);
-                activeObstacles.Add(obstacle);
-                Debug.Log($"Obstacle spawned at: {spawnPosition}");
+                Vector3 spawnPosition = GetLaneSpawnPosition(terrain);
+                Instantiate(
+                    obstaclePrefabs[Random.Range(0, obstaclePrefabs.Length)],
+                    spawnPosition,
+                    Quaternion.identity,
+                    obstaclesParent
+                );
             }
         }
     }
 
-    private Vector3 GetRandomLaneSpawnPosition(GameObject terrain)
+    // Method to get a spawn position on one of the three lanes
+    private Vector3 GetLaneSpawnPosition(GameObject terrain)
     {
-        // Randomly select a lane position
+        // Choose a random lane (-4f, 0f, or 4f)
         float laneX = lanePositions[Random.Range(0, lanePositions.Length)];
-        float randomZ = Random.Range(terrain.transform.position.z - terrainLength / 2f, terrain.transform.position.z + terrainLength / 2f);
-        return new Vector3(laneX, terrain.transform.position.y + 1f, randomZ); // Spawn slightly above the terrain
+        float randomZ = Random.Range(
+            terrain.transform.position.z - 10f,
+            terrain.transform.position.z + 10f
+        );
+
+        // Spawn the item slightly above the terrain for visibility
+        return new Vector3(laneX, terrain.transform.position.y + 1f, randomZ);
+    }
+
+    void Update()
+    {
+        CleanupItems();
+    }
+
+    private void CleanupItems()
+    {
+        foreach (Transform item in coinsParent)
+        {
+            if (item.position.z < player.position.z - itemCleanupDistance)
+                Destroy(item.gameObject);
+        }
+
+        foreach (Transform item in obstaclesParent)
+        {
+            if (item.position.z < player.position.z - itemCleanupDistance)
+                Destroy(item.gameObject);
+        }
     }
 }

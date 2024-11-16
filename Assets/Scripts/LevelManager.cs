@@ -32,7 +32,7 @@ public class LevelManager : MonoBehaviour
         currentPhase++;
         timer = phaseTime;  // Reset timer for next phase
         UpdateLevelText();
-        PlayerMovement.instance.IncreaseDifficulty();  // Increase difficulty for next phase
+        // PlayerMovement.instance.IncreaseDifficulty();  // Increase difficulty for next phase
     }
 
     void UpdateLevelText()
