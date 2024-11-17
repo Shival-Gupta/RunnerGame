@@ -1,6 +1,9 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class GameController : MonoBehaviour
 {
@@ -43,6 +46,7 @@ public class GameController : MonoBehaviour
 
     public void ReduceLife()
     {
+        AudioManager.instance.PlayObstacleHitSound();
         playerLives--;
         UpdateLives(playerLives);
         if (playerLives <= 0)
@@ -68,17 +72,21 @@ public class GameController : MonoBehaviour
         AudioManager.instance.PlayPlayerDeathSound(); // Play player death sound
     }
 
-    // Retry the game by reloading the current scene
-    public void Retry()
+    // Generic Retry method to load a specific scene by index
+    public void RetryLevel(int sceneIndex)
     {
         InitializeGame(); // Reset the game stats before restarting
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Reload the current scene to restart
+        SceneManager.LoadScene(sceneIndex); // Load the specified scene by index
         Time.timeScale = 1; // Ensure the game runs normally after the scene reload
     }
 
-    // Quit the game (for build versions)
+    // Quit the game
     public void QuitGame()
     {
+        #if UNITY_EDITOR
+        EditorApplication.isPlaying = false;
+        #endif
+
         Application.Quit();
     }
 
@@ -90,5 +98,6 @@ public class GameController : MonoBehaviour
         UpdateLives(playerLives);
         UpdateScore(playerScore);
         gameOverUI.SetActive(false); // Hide Game Over UI
+        AudioManager.instance.PlayGameStartSound();
     }
 }

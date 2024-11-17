@@ -7,8 +7,9 @@ public class AudioManager : MonoBehaviour
     [Header("Audio Clips")]
     public AudioClip coinCollectClip;
     public AudioClip obstacleHitClip;
-    public AudioClip backgroundMusicClip;
+    public AudioClip gameStartClip;
     public AudioClip playerDeathClip;
+    public AudioClip[] backgroundMusicClip; // Fixed: Added array declaration
 
     private AudioSource audioSource;
 
@@ -18,7 +19,7 @@ public class AudioManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject); // Optionally keep it across scenes
+            // DontDestroyOnLoad(gameObject); // Optionally keep it across scenes
         }
         else
         {
@@ -32,13 +33,25 @@ public class AudioManager : MonoBehaviour
         PlayBackgroundMusic();
     }
 
-    // Method to play background music
+    public void PlayGameStartSound()
+    {
+        if (gameStartClip != null)
+        {
+            audioSource.PlayOneShot(gameStartClip);
+        }
+    }
+
+    // Method to play background music (with random selection)
     public void PlayBackgroundMusic()
     {
-        if (backgroundMusicClip != null)
+        if (backgroundMusicClip.Length > 0) // Fixed: Use Length property
         {
             audioSource.loop = true;
-            audioSource.clip = backgroundMusicClip;
+
+            // Select a random background music clip
+            int randomIndex = Random.Range(0, backgroundMusicClip.Length);
+            audioSource.clip = backgroundMusicClip[randomIndex];
+
             audioSource.Play();
         }
     }
