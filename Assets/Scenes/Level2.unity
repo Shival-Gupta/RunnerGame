@@ -1189,7 +1189,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 52293879}
         m_TargetAssemblyTypeName: GameController, Assembly-CSharp
         m_MethodName: RetryLevel
         m_Mode: 3
@@ -1824,7 +1824,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 52293879}
         m_TargetAssemblyTypeName: GameController, Assembly-CSharp
         m_MethodName: QuitGame
         m_Mode: 1
@@ -2202,6 +2202,7 @@ MonoBehaviour:
     type: 3}
   obstaclePrefabs:
   - {fileID: 3984039527880439494, guid: 29fa9f193c1abd24386d0ea768c1f666, type: 3}
+  - {fileID: 3984039527880439494, guid: 47e1442525aff9a40b860da8ee4518c9, type: 3}
   maxCoins: 10
   maxObstacles: 5
   coinSpawnChance: 0.7
@@ -3015,7 +3016,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 52293879}
         m_TargetAssemblyTypeName: GameController, Assembly-CSharp
         m_MethodName: RetryLevel
         m_Mode: 3
@@ -3148,7 +3149,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 52293879}
         m_TargetAssemblyTypeName: GameController, Assembly-CSharp
         m_MethodName: RetryLevel
         m_Mode: 3
