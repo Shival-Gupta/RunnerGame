@@ -21,7 +21,7 @@ public class GameController : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            // DontDestroyOnLoad(gameObject);
+            // Optionally, DontDestroyOnLoad(gameObject) if you want to persist the GameController across scenes
         }
         else
         {
@@ -31,21 +31,24 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
-        UpdateScore(0);
-        UpdateLives(playerLives);
+        InitializeGame();
     }
 
     public void AddScore()
     {
         playerScore += coinValue;
         UpdateScore(playerScore);
+        AudioManager.instance.PlayCoinCollectSound(); // Play coin collection sound
     }
 
     public void ReduceLife()
     {
         playerLives--;
         UpdateLives(playerLives);
-        if (playerLives <= 0) GameOver();
+        if (playerLives <= 0)
+        {
+            GameOver();
+        }
     }
 
     private void UpdateScore(int score)
@@ -60,18 +63,32 @@ public class GameController : MonoBehaviour
 
     private void GameOver()
     {
-        Time.timeScale = 0;
-        gameOverUI.SetActive(true);
+        Time.timeScale = 0; // Pause the game
+        gameOverUI.SetActive(true); // Show the Game Over UI
+        AudioManager.instance.PlayPlayerDeathSound(); // Play player death sound
     }
 
+    // Retry the game by reloading the current scene
     public void Retry()
     {
-        Time.timeScale = 1;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        InitializeGame(); // Reset the game stats before restarting
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Reload the current scene to restart
+        Time.timeScale = 1; // Ensure the game runs normally after the scene reload
     }
 
+    // Quit the game (for build versions)
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    // Initialize or reset the game
+    private void InitializeGame()
+    {
+        playerLives = 3;
+        playerScore = 0;
+        UpdateLives(playerLives);
+        UpdateScore(playerScore);
+        gameOverUI.SetActive(false); // Hide Game Over UI
     }
 }

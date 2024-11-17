@@ -62,7 +62,7 @@ public class ItemManager : MonoBehaviour
     // Method to get a spawn position on one of the three lanes
     private Vector3 GetLaneSpawnPosition(GameObject terrain)
     {
-        // Choose a random lane (-4f, 0f, or 4f)
+        // Choose a random lane (-3f, 0f, or 3f)
         float laneX = lanePositions[Random.Range(0, lanePositions.Length)];
         float randomZ = Random.Range(
             terrain.transform.position.z - 10f,
@@ -71,5 +71,17 @@ public class ItemManager : MonoBehaviour
 
         // Spawn the item slightly above the terrain for visibility
         return new Vector3(laneX, terrain.transform.position.y + 1f, randomZ);
+    }
+
+    // Method to handle coin collection (example function)
+    public void CollectCoin()
+    {
+        AudioManager.instance.PlayCoinCollectSound(); // Play coin collection sound
+    }
+
+    // Method to handle obstacle collision (example function)
+    public void HitObstacle()
+    {
+        AudioManager.instance.PlayObstacleHitSound(); // Play obstacle collision sound
     }
 }
