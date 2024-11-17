@@ -20,12 +20,13 @@ public class ItemManager : MonoBehaviour
     // Three lane positions: Left, Middle, Right
     private readonly float[] lanePositions = new float[] { -4f, 0f, 4f };
 
+    // Difficulty variables
+    public float difficultyIncreaseRate = 0.05f; // Increase spawn rate over time
+    private float currentCoinSpawnChance;
+    private float currentObstacleSpawnChance;
+
     void Awake()
     {
-        player = GameObject.FindGameObjectWithTag("Player")?.transform;
-        if (!player)
-            Debug.LogError("Player not found! Ensure it has the 'Player' tag.");
-
         // Find or create global parents
         coinsParent = GameObject.Find("CoinsParent")?.transform;
         if (coinsParent == null)
@@ -44,6 +45,16 @@ public class ItemManager : MonoBehaviour
         }
     }
 
+    void Start()
+    {
+        player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        if (!player)
+            Debug.LogError("Player not found! Ensure it has the 'Player' tag.");
+        
+        currentCoinSpawnChance = coinSpawnChance;
+        currentObstacleSpawnChance = obstacleSpawnChance;
+    }
+
     public void SpawnItems(GameObject terrain)
     {
         SpawnCoins(terrain);
@@ -54,7 +65,7 @@ public class ItemManager : MonoBehaviour
     {
         for (int i = 0; i < maxCoins; i++)
         {
-            if (Random.value <= coinSpawnChance)
+            if (Random.value <= currentCoinSpawnChance) // Use current coin spawn chance
             {
                 Vector3 spawnPosition = GetLaneSpawnPosition(terrain);
                 Instantiate(coinPrefab, spawnPosition, Quaternion.identity, coinsParent);
@@ -69,7 +80,7 @@ public class ItemManager : MonoBehaviour
 
         for (int i = 0; i < maxObstacles; i++)
         {
-            if (Random.value <= obstacleSpawnChance)
+            if (Random.value <= currentObstacleSpawnChance) // Use current obstacle spawn chance
             {
                 Vector3 spawnPosition = GetLaneSpawnPosition(terrain);
                 Instantiate(
@@ -99,6 +110,14 @@ public class ItemManager : MonoBehaviour
     void Update()
     {
         CleanupItems();
+        
+        // Gradually increase spawn chances based on score or time
+        // You can adjust the difficulty threshold condition to suit your game design
+        if (GameController.instance.playerScore > 500) // Adjust based on score
+        {
+            currentCoinSpawnChance = Mathf.Min(currentCoinSpawnChance + difficultyIncreaseRate * Time.deltaTime, 1f);
+            currentObstacleSpawnChance = Mathf.Min(currentObstacleSpawnChance + difficultyIncreaseRate * Time.deltaTime, 1f);
+        }
     }
 
     private void CleanupItems()
